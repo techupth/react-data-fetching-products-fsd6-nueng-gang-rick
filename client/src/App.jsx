@@ -21,22 +21,20 @@ function App() {
   }, []);
   let removePost = async (id)=>{
     await axios.delete(`http://localhost:4001/products/${id}`);
-    main()
   }
   useEffect(()=>{
     removePost()
   },[])
   
   let toggleRemove =(index)=>{
-    let product =[...products]
-    product.splice(index,1)
-    setProducts(product)
+    let product = products[index]
+    removePost(product.id)
   }
   return (
     <div className="App">
       <div className="app-wrapper">
         <h1 className="app-title">Products</h1>
-      </div>{loading ? "Loading…" : products.map((item,index) => {
+      </div>{!loading ? products.map((item,index) => {
         return (
           <div className="product-list" key={item.id}>
             <div className="product">
@@ -57,7 +55,7 @@ function App() {
             </div>
           </div>
         );
-      })}
+      }):<h1>Loading...</h1>}
       
     </div>
   );
