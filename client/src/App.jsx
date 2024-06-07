@@ -14,10 +14,15 @@ function App() {
     }
   };
 
-  const removeProduct = (index) => {
-    let deleteProduct = [...product];
-    deleteProduct.splice(index, 1);
-    setProduct(deleteProduct);
+  const removeProduct = async (id, index) => {
+    try {
+      await axios.delete(`http://localhost:4001/products/${id}`);
+      const updatedProducts = [...products];
+      updatedProducts.splice(index, 1);
+      setProduct(updatedProducts);
+    } catch (error) {
+      console.log("Error deleting the product", error);
+    }
   };
 
   useEffect(() => {
