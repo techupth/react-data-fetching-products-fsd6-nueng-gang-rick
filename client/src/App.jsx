@@ -6,18 +6,20 @@ function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getPop();
+    getData();
   }, []);
 
-  const getPop = async () => {
-    const getPopimi = await axios.get("http://localhost:4001/products");
-    setData(getPopimi.data.data);
-    console.log(getPopimi.data.data)
+  const getData = async () => {
+    const getDatas = await axios.get("http://localhost:4001/products");
+    setData(getDatas.data.data);
+    console.log(getDatas.data.data)
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, index) => {
     await axios.delete(`http://localhost:4001/products/${id}`)
-    getPop();
+    const newData = [...data]
+    newData.splice(index, 1)
+    setData(newData);
   }
 
   return (
@@ -25,7 +27,7 @@ function App() {
       <div className="app-wrapper">
         <h1 className="app-title">Products</h1>
       </div>
-      {data.map((item) => {
+      {data.map((item, index) => {
         return (
           <div className="product-list" key={item.id}>
             <div className="product">
@@ -43,7 +45,7 @@ function App() {
                 <h2>Product price:{item.price} </h2>
                 <p>Product description: {item.description}</p>
               </div>
-              <button className="delete-button" onClick={(event) => {handleDelete(item.id)}}>x</button>
+              <button className="delete-button" onClick={(event) => {handleDelete(item.id, index)}}>x</button>
             </div>
           </div>
         );
